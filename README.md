@@ -6,8 +6,7 @@
 
 [![PHP Version](https://img.shields.io/badge/PHP-%3E%3D7.4-777BB4?logo=php&logoColor=white)](https://www.php.net/)
 [![WordPress](https://img.shields.io/badge/WordPress-%3E%3D5.8-21759B?logo=wordpress&logoColor=white)](https://wordpress.org/)
-[![License](https://img.shields.io/badge/License-GPL%20v3-E31E24)](LICENSE)
-
+[![License](https://img.shields.io/badge/License-Proprietary-E31E24)](LICENSE)
 [Documentación](docs/CONFIGURATION.md) • [Estructura](STRUCTURE.md) • [Changelog](CHANGELOG.md)
 
 </div>
