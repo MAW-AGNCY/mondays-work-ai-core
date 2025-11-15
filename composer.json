@@ -10,8 +10,7 @@
     "openai",
     "plugin"
   ],
-  "license": "GPL-2.0-or-later",
-  "authors": [
+    "license": "Proprietary",  "authors": [
     {
       "name": "Monday's Work",
       "email": "info@mondayswork.com",
