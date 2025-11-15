@@ -14,7 +14,7 @@
  * @package    MondaysWork\AI\Core
  * @subpackage AI
  * @since      1.0.0
- * @author     Monday's Work <info@mondayswork.com>
+ * @author     Mondays at Work <info@mondaysatwork.com>
  */
 
 namespace MondaysWork\AI\Core\AI;
