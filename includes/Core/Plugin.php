@@ -14,7 +14,7 @@
  * @package    MondaysWork\AI\Core
  * @subpackage Core
  * @since      1.0.0
- * @author     Mondays at Work <info@mondaysatwork.com>
+ * @author     Monday's Work <info@mondayswork.com>
  */
 
 namespace MondaysWork\AI\Core\Core;
@@ -80,6 +80,16 @@ class Plugin {
      * @var    AIClientFactory|null
      */
     private $ai_factory = null;
+
+    /**
+     * Admin UI instance
+     * Instancia de la interfaz de administración
+     *
+     * @since  1.0.0
+     * @access private
+     * @var    \MondaysWork\AI\Core\Admin\AdminUI|null
+     */
+    private $admin_ui = null;
 
     /**
      * Versión del plugin
@@ -174,6 +184,9 @@ class Plugin {
 
             // Cargar cliente de IA / Load AI client
             $this->load_ai_client();
+
+            // Inicializar interfaz de administración / Initialize admin UI
+            $this->setup_admin_ui();
 
             // Registrar hooks de WordPress / Register WordPress hooks
             $this->register_hooks();
@@ -290,6 +303,46 @@ class Plugin {
     }
 
     /**
+     * Setup admin UI instance
+     * Configura la instancia de la interfaz de administración
+     *
+     * @since  1.0.0
+     * @access private
+     * @return void
+     */
+    private function setup_admin_ui() {
+        if ( ! class_exists( 'MondaysWork\AI\Core\Admin\AdminUI' ) ) {
+            $this->log_error( 'La clase AdminUI no está disponible' );
+            return;
+        }
+
+        try {
+            // Create AdminUI instance / Crear instancia de AdminUI
+            $this->admin_ui = new \MondaysWork\AI\Core\Admin\AdminUI( $this->config, $this->ai_factory );
+
+            // Initialize AdminUI / Inicializar AdminUI
+            $this->admin_ui->init();
+
+            /**
+             * Action fired after AdminUI initialization
+             * Acción disparada después de inicializar AdminUI
+             *
+             * @since 1.0.0
+             * @param \MondaysWork\AI\Core\Admin\AdminUI $admin_ui Admin UI instance / Instancia de AdminUI
+             */
+            do_action( 'mondays_work_ai_core_admin_ui_initialized', $this->admin_ui );
+
+        } catch ( \Exception $e ) {
+            $this->log_error(
+                'Error al inicializar AdminUI',
+                array(
+                    'error' => $e->getMessage(),
+                )
+            );
+        }
+    }
+
+    /**
      * Registra todos los hooks de WordPress
      * Registers all WordPress hooks
      *
@@ -301,12 +354,8 @@ class Plugin {
         // Hooks de internacionalización / Internationalization hooks
         add_action( 'plugins_loaded', array( $this, 'load_textdomain' ) );
 
-        // Hooks de admin / Admin hooks
-        if ( is_admin() ) {
-            add_action( 'admin_menu', array( $this, 'register_admin_menu' ) );
-            add_action( 'admin_init', array( $this, 'register_settings' ) );
-            add_action( 'admin_enqueue_scripts', array( $this, 'enqueue_admin_assets' ) );
-        }
+        // Admin hooks are now handled by AdminUI class
+        // Los hooks de admin ahora son manejados por la clase AdminUI
 
         // Hooks de frontend / Frontend hooks
         add_action( 'wp_enqueue_scripts', array( $this, 'enqueue_public_assets' ) );
@@ -357,83 +406,33 @@ class Plugin {
     }
 
     /**
-     * Registra el menú de administración
-     * Registers the admin menu
+     * The following admin methods are now handled by AdminUI class
+     * Los siguientes métodos de admin ahora son manejados por la clase AdminUI
      *
-     * @since  1.0.0
-     * @access public
-     * @return void
+     * - register_admin_menu()
+     * - register_settings()
+     * - enqueue_admin_assets()
+     * - render_admin_page()
+     * - display_initialization_error()
      */
-    public function register_admin_menu() {
-        /**
-         * Filtro para modificar la capacidad requerida para acceder al menú
-         * Filter to modify the required capability to access the menu
-         *
-         * @since 1.0.0
-         * @param string $capability Capacidad requerida / Required capability
-         */
-        $capability = apply_filters( 'mondays_work_ai_core_admin_capability', 'manage_options' );
-
-        add_menu_page(
-            __( 'Monday\'s Work AI', 'mondays-work-ai-core' ),
-            __( 'AI Core', 'mondays-work-ai-core' ),
-            $capability,
-            $this->plugin_slug,
-            array( $this, 'render_admin_page' ),
-            'dashicons-admin-generic',
-            80
-        );
-    }
 
     /**
-     * Registra los ajustes del plugin
-     * Registers plugin settings
+     * Muestra un aviso de error de inicialización
+     * Displays an initialization error notice
      *
      * @since  1.0.0
      * @access public
      * @return void
      */
-    public function register_settings() {
-        if ( null !== $this->config ) {
-            $this->config->register_settings();
-        }
-    }
-
-    /**
-     * Encola los assets del panel de administración
-     * Enqueues admin panel assets
-     *
-     * @since  1.0.0
-     * @access public
-     * @param  string $hook_suffix Sufijo del hook de la página actual / Current page hook suffix
-     * @return void
-     */
-    public function enqueue_admin_assets( $hook_suffix ) {
-        // Solo cargar en páginas del plugin / Only load on plugin pages
-        if ( false === strpos( $hook_suffix, $this->plugin_slug ) ) {
-            return;
-        }
-
-        /**
-         * Acción antes de encolar assets de admin
-         * Action before enqueuing admin assets
-         *
-         * @since 1.0.0
-         * @param string $hook_suffix Hook suffix de la página / Page hook suffix
-         */
-        do_action( 'mondays_work_ai_core_before_enqueue_admin_assets', $hook_suffix );
-
-        // Aquí se encolarian CSS y JS de admin
-        // Here admin CSS and JS would be enqueued
-
-        /**
-         * Acción después de encolar assets de admin
-         * Action after enqueuing admin assets
-         *
-         * @since 1.0.0
-         * @param string $hook_suffix Hook suffix de la página / Page hook suffix
-         */
-        do_action( 'mondays_work_ai_core_after_enqueue_admin_assets', $hook_suffix );
+    public function display_initialization_error() {
+        ?>
+        <div class="notice notice-error">
+            <p>
+                <strong><?php esc_html_e( 'Monday\'s Work AI Core:', 'mondays-work-ai-core' ); ?></strong>
+                <?php esc_html_e( 'Hubo un error durante la inicialización del plugin. Por favor, verifica los logs.', 'mondays-work-ai-core' ); ?>
+            </p>
+        </div>
+        <?php
     }
 
     /**
@@ -458,49 +457,6 @@ class Plugin {
 
         // Aquí se encolarían CSS y JS públicos
         // Here public CSS and JS would be enqueued
-    }
-
-    /**
-     * Renderiza la página principal de administración
-     * Renders the main admin page
-     *
-     * @since  1.0.0
-     * @access public
-     * @return void
-     */
-    public function render_admin_page() {
-        // Verificar permisos / Check permissions
-        if ( ! current_user_can( 'manage_options' ) ) {
-            wp_die(
-                esc_html__( 'No tienes permisos suficientes para acceder a esta página.', 'mondays-work-ai-core' )
-            );
-        }
-
-        // Renderizar vista (se implementaría en un archivo de template)
-        // Render view (would be implemented in a template file)
-        echo '<div class="wrap">';
-        echo '<h1>' . esc_html__( 'Monday\'s Work AI Core', 'mondays-work-ai-core' ) . '</h1>';
-        echo '<p>' . esc_html__( 'Configuración del núcleo de IA', 'mondays-work-ai-core' ) . '</p>';
-        echo '</div>';
-    }
-
-    /**
-     * Muestra un aviso de error de inicialización
-     * Displays an initialization error notice
-     *
-     * @since  1.0.0
-     * @access public
-     * @return void
-     */
-    public function display_initialization_error() {
-        ?>
-        <div class="notice notice-error">
-            <p>
-                <strong><?php esc_html_e( 'Monday\'s Work AI Core:', 'mondays-work-ai-core' ); ?></strong>
-                <?php esc_html_e( 'Hubo un error durante la inicialización del plugin. Por favor, verifica los logs.', 'mondays-work-ai-core' ); ?>
-            </p>
-        </div>
-        <?php
     }
 
     /**
@@ -537,6 +493,18 @@ class Plugin {
      */
     public function get_ai_factory() {
         return $this->ai_factory;
+    }
+
+    /**
+     * Obtiene la instancia de la interfaz de administración
+     * Gets the admin UI instance
+     *
+     * @since  1.0.0
+     * @access public
+     * @return \MondaysWork\AI\Core\Admin\AdminUI|null Admin UI instance / Instancia de AdminUI
+     */
+    public function get_admin_ui() {
+        return $this->admin_ui;
     }
 
     /**
