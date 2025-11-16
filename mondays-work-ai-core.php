@@ -1,56 +1,187 @@
 <?php
 /**
- * Plugin Name: Monday's Work AI Core
- * Plugin URI: https://github.com/MAW-AGNCY/mondays-work-ai-core
- * Description: Core module for AI-powered WordPress/WooCommerce plugin - MVP architecture with modular AI client integration
- * Version: 0.1.0
- * Author: MAW-AGNCY
- * Author URI: https://github.com/MAW-AGNCY
- * License: Proprietary
- * License URI: https://github.com/MAW-AGNCY/mondays-work-ai-core/blob/main/LICENSE
- * Domain Path: /languages
- * Requires at least: 6.0
- * Requires PHP: 8.0
+ * Plugin Name:       Monday's Work AI Core
+ * Plugin URI:        https://github.com/MAW-AGNCY/mondays-work-ai-core
+ * Description:       Core AI system for WooCommerce - Modular artificial intelligence integration
+ * Version:           1.0.0
+ * Requires at least: 5.8
+ * Requires PHP:      7.4
+ * Author:            Mondays at Work
+ * Author URI:        https://mondaysatwork.com
+ * License:           Proprietary
+ * License URI:       https://github.com/MAW-AGNCY/mondays-work-ai-core/blob/main/LICENSE
+ * Text Domain:       mondays-work-ai-core
+ * Domain Path:       /languages
+ *
+ * @package           MondaysWork\AI\Core
+ * @author            Mondays at Work <info@mondaysatwork.com>
+ * @copyright         2025 Mondays at Work
+ * @license           Proprietary
+ *
+ * This plugin is proprietary software and may not be distributed, modified,
+ * or used without explicit permission from Mondays at Work.
+ * Este plugin es software propietario y no puede ser distribuido, modificado
+ * o usado sin permiso explícito de Mondays at Work.
  */
 
-namespace MondaysWork\AI\Core;
-
-// Exit if accessed directly
+// Exit if accessed directly / Salir si se accede directamente
 if ( ! defined( 'ABSPATH' ) ) {
     exit;
 }
 
-// Define plugin constants
-define( 'MWAI_VERSION', '0.1.0' );
-define( 'MWAI_PLUGIN_FILE', __FILE__ );
-define( 'MWAI_PLUGIN_DIR', plugin_dir_path( __FILE__ ) );
-define( 'MWAI_PLUGIN_URL', plugin_dir_url( __FILE__ ) );
-define( 'MWAI_PLUGIN_BASENAME', plugin_basename( __FILE__ ) );
-
-// Require Composer autoloader
-if ( file_exists( MWAI_PLUGIN_DIR . 'vendor/autoload.php' ) ) {
-    require_once MWAI_PLUGIN_DIR . 'vendor/autoload.php';
+// Load Composer autoloader / Cargar autoloader de Composer
+if ( file_exists( __DIR__ . '/vendor/autoload.php' ) ) {
+    require_once __DIR__ . '/vendor/autoload.php';
 }
 
-// Initialize the plugin
-function mwai_init() {
-    // Load the core plugin class
-    if ( class_exists( 'MondaysWork\\AI\\Core\\Plugin' ) ) {
-        Plugin::get_instance();
-    }
+// Initialize plugin / Inicializar plugin
+if ( class_exists( 'MondaysWork\\AI\\Core\\Core\\Plugin' ) ) {
+    use MondaysWork\AI\Core\Core\Plugin;
+    
+    // Get plugin instance / Obtener instancia del plugin
+    $plugin = Plugin::get_instance();
+    
+    // Initialize the plugin / Inicializar el plugin
+    $plugin->init();
 }
-add_action( 'plugins_loaded', __NAMESPACE__ . '\\mwai_init' );
 
-// Activation hook
+/**
+ * Activation hook / Hook de activación
+ * Runs when the plugin is activated
+ * Se ejecuta cuando el plugin es activado
+ */
 register_activation_hook( __FILE__, function() {
-    if ( class_exists( 'MondaysWork\\AI\\Core\\Activator' ) ) {
-        Activator::activate();
+    if ( class_exists( 'MondaysWork\\AI\\Core\\Core\\Activator' ) ) {
+        \MondaysWork\AI\Core\Core\Activator::activate();
     }
 } );
 
-// Deactivation hook
+/**
+ * Deactivation hook / Hook de desactivación
+ * Runs when the plugin is deactivated
+ * Se ejecuta cuando el plugin es desactivado
+ */
 register_deactivation_hook( __FILE__, function() {
-    if ( class_exists( 'MondaysWork\\AI\\Core\\Deactivator' ) ) {
-        Deactivator::deactivate();
+    if ( class_exists( 'MondaysWork\\AI\\Core\\Core\\Deactivator' ) ) {
+        \MondaysWork\AI\Core\Core\Deactivator::deactivate();
     }
 } );
+
+/**
+ * Define plugin constants / Definir constantes del plugin
+ */
+if ( ! defined( 'MWAI_CORE_VERSION' ) ) {
+    define( 'MWAI_CORE_VERSION', '1.0.0' );
+}
+
+if ( ! defined( 'MWAI_CORE_PLUGIN_FILE' ) ) {
+    define( 'MWAI_CORE_PLUGIN_FILE', __FILE__ );
+}
+
+if ( ! defined( 'MWAI_CORE_PLUGIN_DIR' ) ) {
+    define( 'MWAI_CORE_PLUGIN_DIR', plugin_dir_path( __FILE__ ) );
+}
+
+if ( ! defined( 'MWAI_CORE_PLUGIN_URL' ) ) {
+    define( 'MWAI_CORE_PLUGIN_URL', plugin_dir_url( __FILE__ ) );
+}
+
+if ( ! defined( 'MWAI_CORE_PLUGIN_BASENAME' ) ) {
+    define( 'MWAI_CORE_PLUGIN_BASENAME', plugin_basename( __FILE__ ) );
+}
+
+/**
+ * Check for required dependencies / Verificar dependencias requeridas
+ */
+add_action( 'admin_init', function() {
+    // Check if WooCommerce is active / Verificar si WooCommerce está activo
+    if ( ! class_exists( 'WooCommerce' ) ) {
+        add_action( 'admin_notices', function() {
+            ?>
+            <div class="notice notice-error">
+                <p>
+                    <strong><?php esc_html_e( 'Monday\'s Work AI Core:', 'mondays-work-ai-core' ); ?></strong>
+                    <?php esc_html_e( 'Este plugin requiere WooCommerce para funcionar correctamente.', 'mondays-work-ai-core' ); ?>
+                    <?php esc_html_e( 'This plugin requires WooCommerce to work properly.', 'mondays-work-ai-core' ); ?>
+                </p>
+            </div>
+            <?php
+        } );
+        
+        // Deactivate plugin / Desactivar plugin
+        deactivate_plugins( plugin_basename( __FILE__ ) );
+    }
+} );
+
+/**
+ * Load plugin text domain for translations / Cargar dominio de texto para traducciones
+ */
+add_action( 'plugins_loaded', function() {
+    load_plugin_textdomain(
+        'mondays-work-ai-core',
+        false,
+        dirname( plugin_basename( __FILE__ ) ) . '/languages'
+    );
+} );
+
+/**
+ * Add settings link on plugins page / Añadir enlace de configuración en página de plugins
+ */
+add_filter( 'plugin_action_links_' . plugin_basename( __FILE__ ), function( $links ) {
+    $settings_link = sprintf(
+        '<a href="%s">%s</a>',
+        admin_url( 'admin.php?page=mondays-work-ai-core' ),
+        esc_html__( 'Configuración', 'mondays-work-ai-core' )
+    );
+    
+    array_unshift( $links, $settings_link );
+    
+    return $links;
+} );
+
+/**
+ * Add plugin row meta links / Añadir enlaces de meta en fila del plugin
+ */
+add_filter( 'plugin_row_meta', function( $links, $file ) {
+    if ( plugin_basename( __FILE__ ) === $file ) {
+        $row_meta = array(
+            'docs' => sprintf(
+                '<a href="%s" target="_blank">%s</a>',
+                'https://github.com/MAW-AGNCY/mondays-work-ai-core/blob/main/docs/CONFIGURATION.md',
+                esc_html__( 'Documentación', 'mondays-work-ai-core' )
+            ),
+            'support' => sprintf(
+                '<a href="%s">%s</a>',
+                'mailto:info@mondaysatwork.com',
+                esc_html__( 'Soporte', 'mondays-work-ai-core' )
+            ),
+        );
+        
+        return array_merge( $links, $row_meta );
+    }
+    
+    return $links;
+}, 10, 2 );
+
+/**
+ * Display admin notice if Composer dependencies are missing
+ * Mostrar aviso de admin si faltan dependencias de Composer
+ */
+if ( ! file_exists( __DIR__ . '/vendor/autoload.php' ) ) {
+    add_action( 'admin_notices', function() {
+        ?>
+        <div class="notice notice-error">
+            <p>
+                <strong><?php esc_html_e( 'Monday\'s Work AI Core:', 'mondays-work-ai-core' ); ?></strong>
+                <?php esc_html_e( 'Faltan dependencias de Composer. Por favor ejecuta:', 'mondays-work-ai-core' ); ?>
+                <code>composer install --no-dev</code>
+            </p>
+            <p>
+                <strong>English:</strong>
+                <?php esc_html_e( 'Composer dependencies are missing. Please run:', 'mondays-work-ai-core' ); ?>
+                <code>composer install --no-dev</code>
+            </p>
+        </div>
+        <?php
+    } );
+}
