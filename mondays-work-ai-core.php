@@ -29,6 +29,11 @@ if ( ! defined( 'ABSPATH' ) ) {
     exit;
 }
 
+// Use statements at file level / Declaraciones use al nivel del archivo
+use MondaysWork\AI\Core\Core\Plugin;
+use MondaysWork\AI\Core\Core\Activator;
+use MondaysWork\AI\Core\Core\Deactivator;
+
 // Load Composer autoloader / Cargar autoloader de Composer
 if ( file_exists( __DIR__ . '/vendor/autoload.php' ) ) {
     require_once __DIR__ . '/vendor/autoload.php';
@@ -36,8 +41,6 @@ if ( file_exists( __DIR__ . '/vendor/autoload.php' ) ) {
 
 // Initialize plugin / Inicializar plugin
 if ( class_exists( 'MondaysWork\\AI\\Core\\Core\\Plugin' ) ) {
-    use MondaysWork\AI\Core\Core\Plugin;
-    
     // Get plugin instance / Obtener instancia del plugin
     $plugin = Plugin::get_instance();
     
@@ -52,7 +55,7 @@ if ( class_exists( 'MondaysWork\\AI\\Core\\Core\\Plugin' ) ) {
  */
 register_activation_hook( __FILE__, function() {
     if ( class_exists( 'MondaysWork\\AI\\Core\\Core\\Activator' ) ) {
-        \MondaysWork\AI\Core\Core\Activator::activate();
+        Activator::activate();
     }
 } );
 
@@ -63,7 +66,7 @@ register_activation_hook( __FILE__, function() {
  */
 register_deactivation_hook( __FILE__, function() {
     if ( class_exists( 'MondaysWork\\AI\\Core\\Core\\Deactivator' ) ) {
-        \MondaysWork\AI\Core\Core\Deactivator::deactivate();
+        Deactivator::deactivate();
     }
 } );
 
