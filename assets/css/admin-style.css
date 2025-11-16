@@ -1,0 +1,587 @@
+/**
+ * Admin Styles - Monday's Work AI Core
+ * Estilos de Administración - Monday's Work AI Core
+ *
+ * Corporate styles with Mondays at Work branding (#E31E24)
+ * Estilos corporativos con marca Mondays at Work (#E31E24)
+ *
+ * @package    MondaysWork\AI\Core
+ * @subpackage Assets
+ * @since      1.0.0
+ * @author     Mondays at Work <info@mondaysatwork.com>
+ * @license    Proprietary
+ */
+
+/* ==========================================================================
+   CSS Variables / Variables CSS
+   ========================================================================== */
+
+:root {
+    --mwai-primary: #E31E24;
+    --mwai-primary-hover: #C01A1F;
+    --mwai-primary-light: #FFE5E6;
+    --mwai-secondary: #333333;
+    --mwai-text: #2C3338;
+    --mwai-text-light: #646970;
+    --mwai-border: #DCDCDE;
+    --mwai-background: #F0F0F1;
+    --mwai-white: #FFFFFF;
+    --mwai-success: #00A32A;
+    --mwai-error: #D63638;
+    --mwai-warning: #F0B849;
+    --mwai-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+    --mwai-shadow-hover: 0 4px 16px rgba(0, 0, 0, 0.12);
+    --mwai-radius: 4px;
+    --mwai-transition: all 0.3s ease;
+}
+
+/* ==========================================================================
+   Main Wrapper / Contenedor Principal
+   ========================================================================== */
+
+.mwai-admin-wrap {
+    margin: 20px 20px 0 0;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", sans-serif;
+}
+
+/* ==========================================================================
+   Header / Cabecera
+   ========================================================================== */
+
+.mwai-header {
+    background: var(--mwai-white);
+    padding: 30px;
+    margin-bottom: 20px;
+    border-radius: var(--mwai-radius);
+    box-shadow: var(--mwai-shadow);
+    border-left: 4px solid var(--mwai-primary);
+}
+
+.mwai-title {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    margin: 0 0 10px 0;
+    font-size: 28px;
+    line-height: 1.2;
+}
+
+.mwai-logo {
+    color: var(--mwai-primary);
+    font-weight: 700;
+    letter-spacing: -0.5px;
+}
+
+.mwai-subtitle {
+    color: var(--mwai-text-light);
+    font-weight: 400;
+    font-size: 24px;
+}
+
+.mwai-description {
+    color: var(--mwai-text-light);
+    font-size: 14px;
+    margin: 0;
+}
+
+/* ==========================================================================
+   Navigation Tabs / Pestañas de Navegación
+   ========================================================================== */
+
+.mwai-tabs {
+    display: flex;
+    gap: 0;
+    margin-bottom: 20px;
+    background: var(--mwai-white);
+    border-radius: var(--mwai-radius);
+    box-shadow: var(--mwai-shadow);
+    overflow: hidden;
+}
+
+.mwai-tab {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 15px 25px;
+    text-decoration: none;
+    color: var(--mwai-text);
+    border: none;
+    border-bottom: 3px solid transparent;
+    background: var(--mwai-white);
+    transition: var(--mwai-transition);
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: 500;
+}
+
+.mwai-tab:hover {
+    background: var(--mwai-background);
+    color: var(--mwai-primary);
+}
+
+.mwai-tab:focus {
+    outline: 2px solid var(--mwai-primary);
+    outline-offset: -2px;
+}
+
+.mwai-tab-active {
+    color: var(--mwai-primary);
+    border-bottom-color: var(--mwai-primary);
+    background: var(--mwai-primary-light);
+}
+
+.mwai-tab .dashicons {
+    font-size: 18px;
+    width: 18px;
+    height: 18px;
+}
+
+.mwai-tab-label {
+    font-weight: 500;
+}
+
+/* ==========================================================================
+   Tab Content / Contenido de Pestañas
+   ========================================================================== */
+
+.mwai-tab-content {
+    animation: mwai-fade-in 0.3s ease;
+}
+
+@keyframes mwai-fade-in {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* ==========================================================================
+   Cards / Tarjetas
+   ========================================================================== */
+
+.mwai-card {
+    background: var(--mwai-white);
+    padding: 30px;
+    margin-bottom: 20px;
+    border-radius: var(--mwai-radius);
+    box-shadow: var(--mwai-shadow);
+    transition: var(--mwai-transition);
+}
+
+.mwai-card:hover {
+    box-shadow: var(--mwai-shadow-hover);
+}
+
+.mwai-card h2 {
+    margin: 0 0 20px 0;
+    padding: 0 0 15px 0;
+    border-bottom: 2px solid var(--mwai-border);
+    color: var(--mwai-secondary);
+    font-size: 20px;
+    font-weight: 600;
+}
+
+/* ==========================================================================
+   Forms / Formularios
+   ========================================================================== */
+
+.mwai-form .form-table {
+    margin-top: 0;
+}
+
+.mwai-form .form-table th {
+    padding: 20px 10px 20px 0;
+    font-weight: 600;
+    color: var(--mwai-secondary);
+}
+
+.mwai-form .form-table td {
+    padding: 20px 10px;
+}
+
+.mwai-form input[type="text"],
+.mwai-form input[type="password"],
+.mwai-form input[type="number"],
+.mwai-form input[type="email"],
+.mwai-form select,
+.mwai-form textarea {
+    border: 1px solid var(--mwai-border);
+    border-radius: var(--mwai-radius);
+    padding: 8px 12px;
+    font-size: 14px;
+    transition: var(--mwai-transition);
+}
+
+.mwai-form input[type="text"]:focus,
+.mwai-form input[type="password"]:focus,
+.mwai-form input[type="number"]:focus,
+.mwai-form input[type="email"]:focus,
+.mwai-form select:focus,
+.mwai-form textarea:focus {
+    border-color: var(--mwai-primary);
+    outline: none;
+    box-shadow: 0 0 0 1px var(--mwai-primary);
+}
+
+.mwai-form .description {
+    color: var(--mwai-text-light);
+    font-size: 13px;
+    margin-top: 5px;
+}
+
+/* ==========================================================================
+   Toggle Switch / Interruptor
+   ========================================================================== */
+
+.mwai-switch {
+    position: relative;
+    display: inline-block;
+    width: 50px;
+    height: 24px;
+}
+
+.mwai-switch input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+.mwai-slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #ccc;
+    transition: var(--mwai-transition);
+    border-radius: 24px;
+}
+
+.mwai-slider:before {
+    position: absolute;
+    content: "";
+    height: 18px;
+    width: 18px;
+    left: 3px;
+    bottom: 3px;
+    background-color: white;
+    transition: var(--mwai-transition);
+    border-radius: 50%;
+}
+
+.mwai-switch input:checked + .mwai-slider {
+    background-color: var(--mwai-primary);
+}
+
+.mwai-switch input:focus + .mwai-slider {
+    box-shadow: 0 0 0 2px var(--mwai-primary-light);
+}
+
+.mwai-switch input:checked + .mwai-slider:before {
+    transform: translateX(26px);
+}
+
+/* ==========================================================================
+   Buttons / Botones
+   ========================================================================== */
+
+.mwai-button-primary,
+.button.mwai-button-primary {
+    background-color: var(--mwai-primary) !important;
+    border-color: var(--mwai-primary) !important;
+    color: var(--mwai-white) !important;
+    padding: 10px 20px !important;
+    font-weight: 600 !important;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    transition: var(--mwai-transition) !important;
+    box-shadow: var(--mwai-shadow) !important;
+}
+
+.mwai-button-primary:hover,
+.button.mwai-button-primary:hover {
+    background-color: var(--mwai-primary-hover) !important;
+    border-color: var(--mwai-primary-hover) !important;
+    transform: translateY(-1px);
+    box-shadow: var(--mwai-shadow-hover) !important;
+}
+
+.mwai-button-primary:focus,
+.button.mwai-button-primary:focus {
+    outline: 2px solid var(--mwai-primary);
+    outline-offset: 2px;
+}
+
+.mwai-test-connection {
+    margin-left: 10px;
+}
+
+/* ==========================================================================
+   Notices / Avisos
+   ========================================================================== */
+
+.mwai-notice {
+    padding: 15px;
+    margin: 15px 0;
+    border-radius: var(--mwai-radius);
+    border-left: 4px solid;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    animation: mwai-slide-in 0.3s ease;
+}
+
+@keyframes mwai-slide-in {
+    from {
+        opacity: 0;
+        transform: translateX(-20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+.mwai-notice-success {
+    background: #EDF7ED;
+    border-left-color: var(--mwai-success);
+    color: #1E4620;
+}
+
+.mwai-notice-error {
+    background: #FCEBEC;
+    border-left-color: var(--mwai-error);
+    color: #5A1E1F;
+}
+
+.mwai-notice-warning {
+    background: #FEF8E7;
+    border-left-color: var(--mwai-warning);
+    color: #4F3C00;
+}
+
+.mwai-notice-info {
+    background: var(--mwai-primary-light);
+    border-left-color: var(--mwai-primary);
+    color: var(--mwai-primary-hover);
+}
+
+.mwai-notice .dashicons {
+    flex-shrink: 0;
+}
+
+/* ==========================================================================
+   Connection Status / Estado de Conexión
+   ========================================================================== */
+
+.mwai-connection-status {
+    margin-top: 10px;
+    padding: 10px;
+    border-radius: var(--mwai-radius);
+    display: none;
+}
+
+.mwai-connection-status.active {
+    display: block;
+}
+
+.mwai-connection-status.success {
+    background: #EDF7ED;
+    color: var(--mwai-success);
+    border: 1px solid var(--mwai-success);
+}
+
+.mwai-connection-status.error {
+    background: #FCEBEC;
+    color: var(--mwai-error);
+    border: 1px solid var(--mwai-error);
+}
+
+.mwai-connection-status.loading {
+    background: var(--mwai-background);
+    color: var(--mwai-text-light);
+    border: 1px solid var(--mwai-border);
+}
+
+/* ==========================================================================
+   Help Section / Sección de Ayuda
+   ========================================================================== */
+
+.mwai-help-section {
+    margin-bottom: 30px;
+}
+
+.mwai-help-section h3 {
+    color: var(--mwai-secondary);
+    margin-bottom: 15px;
+    font-size: 18px;
+}
+
+.mwai-help-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+.mwai-help-list li {
+    margin-bottom: 10px;
+    padding-left: 25px;
+    position: relative;
+}
+
+.mwai-help-list li:before {
+    content: "→";
+    position: absolute;
+    left: 0;
+    color: var(--mwai-primary);
+    font-weight: bold;
+}
+
+.mwai-help-list a {
+    color: var(--mwai-primary);
+    text-decoration: none;
+    transition: var(--mwai-transition);
+}
+
+.mwai-help-list a:hover {
+    color: var(--mwai-primary-hover);
+    text-decoration: underline;
+}
+
+/* ==========================================================================
+   System Info Table / Tabla de Info del Sistema
+   ========================================================================== */
+
+.mwai-system-info {
+    margin-top: 15px;
+}
+
+.mwai-system-info td {
+    padding: 12px;
+    border-bottom: 1px solid var(--mwai-border);
+}
+
+.mwai-system-info tr:last-child td {
+    border-bottom: none;
+}
+
+.mwai-ext-status {
+    display: inline-block;
+    padding: 2px 8px;
+    margin-right: 5px;
+    border-radius: 3px;
+    background: var(--mwai-background);
+    font-size: 12px;
+    font-family: monospace;
+}
+
+/* ==========================================================================
+   Responsive / Responsive
+   ========================================================================== */
+
+@media screen and (max-width: 782px) {
+    .mwai-tabs {
+        flex-direction: column;
+    }
+
+    .mwai-tab {
+        border-bottom: 1px solid var(--mwai-border);
+        border-left: 3px solid transparent;
+    }
+
+    .mwai-tab-active {
+        border-left-color: var(--mwai-primary);
+        border-bottom-color: var(--mwai-border);
+    }
+
+    .mwai-header {
+        padding: 20px;
+    }
+
+    .mwai-title {
+        flex-direction: column;
+        align-items: flex-start;
+        font-size: 24px;
+    }
+
+    .mwai-card {
+        padding: 20px;
+    }
+
+    .mwai-form .form-table th,
+    .mwai-form .form-table td {
+        display: block;
+        width: 100%;
+        padding: 10px 0;
+    }
+}
+
+/* ==========================================================================
+   Accessibility / Accesibilidad
+   ========================================================================== */
+
+.mwai-admin-wrap *:focus {
+    outline: 2px solid var(--mwai-primary);
+    outline-offset: 2px;
+}
+
+/* Preserve outline for keyboard navigation / Preservar contorno para navegación por teclado */
+.mwai-admin-wrap *:focus:not(:focus-visible) {
+    outline: none;
+}
+
+.mwai-admin-wrap *:focus-visible {
+    outline: 2px solid var(--mwai-primary);
+    outline-offset: 2px;
+}
+
+/* Screen reader only text / Texto solo para lectores de pantalla */
+.sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border-width: 0;
+}
+
+/* ==========================================================================
+   Loading Spinner / Spinner de Carga
+   ========================================================================== */
+
+.mwai-spinner {
+    display: inline-block;
+    width: 16px;
+    height: 16px;
+    border: 2px solid var(--mwai-border);
+    border-top-color: var(--mwai-primary);
+    border-radius: 50%;
+    animation: mwai-spin 0.6s linear infinite;
+}
+
+@keyframes mwai-spin {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+/* ==========================================================================
+   Utility Classes / Clases de Utilidad
+   ========================================================================== */
+
+.mwai-mt-10 { margin-top: 10px; }
+.mwai-mt-20 { margin-top: 20px; }
+.mwai-mb-10 { margin-bottom: 10px; }
+.mwai-mb-20 { margin-bottom: 20px; }
+.mwai-text-center { text-align: center; }
+.mwai-text-right { text-align: right; }
+.mwai-hidden { display: none; }
+.mwai-visible { display: block; }
