@@ -27,7 +27,7 @@
         init: function() {
             this.initTabs();
             this.initFormValidation();
-            this.initConnectionTest();
+            this.210();
             this.initAjaxSave();
             this.initConfirmDialogs();
             this.initTooltips();
@@ -212,7 +212,8 @@
                     data: {
                         action: 'mwai_test_connection',
                         nonce: mwaiAdmin.nonce,
-                        provider: provider
+                        provider: provider,
+                        					api_key: $('#mwai_api_key').val()
                     },
                     success: function(response) {
                         if (response.success) {
