@@ -238,8 +238,7 @@ class AdminUI {
         }
 
         $plugin_url = plugin_dir_url( dirname( dirname( __FILE__ ) ) );
-        $version    = '1.0.0';
-
+		$version = '1.0.2';
         // Enqueue CSS / Encolar CSS
         wp_enqueue_style(
             'mwai-admin-style',
