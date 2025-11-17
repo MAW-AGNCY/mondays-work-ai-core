@@ -34,11 +34,8 @@ use MondaysWork\AI\Core\Core\Plugin;
 use MondaysWork\AI\Core\Core\Activator;
 use MondaysWork\AI\Core\Core\Deactivator;
 
-// Load Composer autoloader / Cargar autoloader de Composer
-if ( file_exists( __DIR__ . '/vendor/autoload.php' ) ) {
-    require_once __DIR__ . '/vendor/autoload.php';
-}
-
+// Load custom PSR-4 autoloader / Cargar autoloader PSR-4 personalizado
+require_once __DIR__ . '/includes/autoload.php';
 // Initialize plugin / Inicializar plugin
 if ( class_exists( 'MondaysWork\\AI\\Core\\Core\\Plugin' ) ) {
     // Get plugin instance / Obtener instancia del plugin
