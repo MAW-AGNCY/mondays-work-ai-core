@@ -743,4 +743,4 @@ class AdminUI {
                             />
                             <span><?php esc_html_e( 'peticiones/hora', 'mondays-work-ai-core' ); ?></span>
                             <p class="description">
-                                <?php esc_html_e( 'Número máximo de
+                                <?php esc_html_e( 'Número máximo de peticiones por hora', 'mondays-work-ai-core' ); ?>
