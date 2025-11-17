@@ -157,7 +157,7 @@
             switch (provider) {
                 case 'openai':
                     // OpenAI keys start with "sk-"
-                    isValid = /^sk-[a-zA-Z0-9]{20,}$/.test(apiKey);
+                    isValid = /^sk-(?:proj-)?[a-zA-Z0-9\-]{20,}$/.test(apiKey);
                     message = 'API key de OpenAI inválida. Debe comenzar con "sk-"';
                     break;
 
