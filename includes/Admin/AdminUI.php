@@ -832,4 +832,129 @@ class AdminUI {
 			</div>
 		</div>
 		<?php	}
+
+		/**
+	 * Handle AJAX test connection request
+	 * Maneja peticion AJAX de prueba de conexion
+	 *
+	 * @since 1.0.0
+	 * @access public
+	 * @return void
+	 */
+	public function ajax_test_connection(): void {
+		// Verify nonce / Verificar nonce
+		if ( ! check_ajax_referer( 'mwai_admin_nonce', 'nonce', false ) ) {
+			wp_send_json_error( array(
+				'message' => __( 'Invalid security token', 'mondays-work-ai-core' )
+			) );
+		}
+
+		// Check permissions / Verificar permisos
+		if ( ! current_user_can( 'manage_options' ) ) {
+			wp_send_json_error( array(
+				'message' => __( 'Insufficient permissions', 'mondays-work-ai-core' )
+			) );
+		}
+
+		// Get provider and API key / Obtener proveedor y API key
+		$provider = isset( $_POST['provider'] ) ? sanitize_text_field( wp_unslash( $_POST['provider'] ) ) : '';
+		$api_key = isset( $_POST['api_key'] ) ? sanitize_text_field( wp_unslash( $_POST['api_key'] ) ) : '';
+
+		if ( empty( $provider ) || empty( $api_key ) ) {
+			wp_send_json_error( array(
+				'message' => __( 'Missing provider or API key', 'mondays-work-ai-core' )
+			) );
+		}
+
+		try {
+			// Create temporary config / Crear configuracion temporal
+			$temp_config = array(
+				'ai_provider' => $provider,
+				'api_key' => $api_key,
+				'model' => 'gpt-3.5-turbo', // Default for testing
+			);
+
+			// Try to create client / Intentar crear cliente
+			$client = $this->ai_factory->create_client( $provider, $temp_config );
+
+			if ( ! $client ) {
+				throw new \Exception( __( 'Could not create AI client', 'mondays-work-ai-core' ) );
+			}
+
+			// Test simple completion / Probar completion simple
+			$response = $client->complete( 'Test connection. Reply with OK.' );
+
+			if ( $response && ! empty( $response['choices'][0]['message']['content'] ) ) {
+				wp_send_json_success( array(
+					'message' => __( 'Connection successful!', 'mondays-work-ai-core' ),
+					'response' => $response['choices'][0]['message']['content']
+				) );
+			} else {
+				throw new \Exception( __( 'Invalid response from API', 'mondays-work-ai-core' ) );
+			}
+		} catch ( \Exception $e ) {
+			wp_send_json_error( array(
+				'message' => sprintf(
+					/* translators: %s: error message */
+					__( 'Connection failed: %s', 'mondays-work-ai-core' ),
+					$e->getMessage()
+				)
+			) );
+		}
+	}
+
+	/**
+	 * Handle AJAX save settings request
+	 * Maneja peticion AJAX para guardar configuracion
+	 *
+	 * @since 1.0.0
+	 * @access public
+	 * @return void
+	 */
+	public function ajax_save_settings(): void {
+		// Verify nonce / Verificar nonce
+		if ( ! check_ajax_referer( 'mwai_admin_nonce', 'nonce', false ) ) {
+			wp_send_json_error( array(
+				'message' => __( 'Invalid security token', 'mondays-work-ai-core' )
+			) );
+		}
+
+		// Check permissions / Verificar permisos
+		if ( ! current_user_can( 'manage_options' ) ) {
+			wp_send_json_error( array(
+				'message' => __( 'Insufficient permissions', 'mondays-work-ai-core' )
+			) );
+		}
+
+		// Get settings data / Obtener datos de configuracion
+		$settings = isset( $_POST['settings'] ) ? $_POST['settings'] : array();
+
+		if ( empty( $settings ) || ! is_array( $settings ) ) {
+			wp_send_json_error( array(
+				'message' => __( 'Invalid settings data', 'mondays-work-ai-core' )
+			) );
+		}
+
+		// Sanitize settings / Sanitizar configuracion
+		$sanitized = $this->sanitize_settings( $settings );
+
+		// Save to database / Guardar en base de datos
+		$result = update_option( $this->plugin_slug . '_config', $sanitized );
+
+		if ( $result || get_option( $this->plugin_slug . '_config' ) === $sanitized ) {
+			// Update config instance / Actualizar instancia de config
+			foreach ( $sanitized as $key => $value ) {
+				$this->config->set( $key, $value );
+			}
+
+			wp_send_json_success( array(
+				'message' => __( 'Settings saved successfully', 'mondays-work-ai-core' )
+			) );
+		} else {
+			wp_send_json_error( array(
+				'message' => __( 'Failed to save settings', 'mondays-work-ai-core' )
+			) );
+		}
+	}
+
 	}
