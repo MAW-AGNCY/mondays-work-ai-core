@@ -755,4 +755,29 @@ class AdminUI {
 		</div>
 		<?php
 	}
+
+		/**
+	 * Render Help tab content
+	 * Renderiza contenido de pestaña Ayuda
+	 *
+	 * @since 1.0.0
+	 * @access public
+	 * @return void
+	 */
+	public function render_help_tab(): void {
+		?>
+		<div class="wrap">
+			<h2><?php esc_html_e( 'Ayuda y Documentación', 'mondays-work-ai-core' ); ?></h2>
+			
+			<div class="mwai-card">
+				<h3><?php esc_html_e( 'Recursos de Ayuda', 'mondays-work-ai-core' ); ?></h3>
+				<ul>
+					<li><?php esc_html_e( 'Documentación completa disponible próximamente', 'mondays-work-ai-core' ); ?></li>
+					<li><?php esc_html_e( 'Soporte técnico: info@mondaysatwork.com', 'mondays-work-ai-core' ); ?></li>
+					<li><?php esc_html_e( 'Repositorio GitHub: https://github.com/MAW-AGNCY/mondays-work-ai-core', 'mondays-work-ai-core' ); ?></li>
+				</ul>
+			</div>
+		</div>
+		<?php
+	}
 	}
