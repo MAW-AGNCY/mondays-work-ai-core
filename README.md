@@ -53,21 +53,16 @@
 ```bash
 git clone https://github.com/MAW-AGNCY/mondays-work-ai-core.git
 cd mondays-work-ai-core
+
+> ✅ **Nota:** Este plugin ya no requiere Composer. Incluye autoloader PSR-4 personalizado y funciona en cualquier hosting sin necesidad de instalación de dependencias.
 ```
 
-2. **Instalar dependencias:**
-```bash
-composer install
+2. **Subir al directorio de plugins:**`
+```bashcp -r mondays-work-ai-core /path/to/wordpress/wp-content/plugins/
 ```
 
-3. **Subir al directorio de plugins:**
-```bash
-cp -r mondays-work-ai-core /path/to/wordpress/wp-content/plugins/
-```
-
-4. **Activar desde WordPress:**
-   - Ir a `Plugins > Plugins instalados`
-   - Buscar "Monday's Work AI Core"
+3. **Activar desde WordPress:**
+   - Ir a 'Plugins > Plugins instalados'   - Buscar "Monday's Work AI Core"
    - Click en "Activar"
 
 ---
