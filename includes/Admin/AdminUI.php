@@ -606,16 +606,31 @@ class AdminUI {
                             </label>
                         </th>
                         <td>
-                            <input
-                                type="text"
-                                id="mwai_model"
-                                name="<?php echo esc_attr( $this->plugin_slug . '_config' ); ?>[model]"
-                                value="<?php echo esc_attr( $this->config->get( 'model', 'gpt-4' ) ); ?>"
-                                class="regular-text"
-                            />
+                            <select
+						id="mwai_model"
+						name="<?php echo esc_attr( $this->plugin_slug . '_config' ); ?>[model]"
+						class="regular-text"
+					>
+						<?php
+						$current_model = $this->config->get( 'model', 'gpt-4' );
+						$models = array(
+							'gpt-4' => 'GPT-4',
+							'gpt-4-turbo' => 'GPT-4 Turbo',
+							'gpt-3.5-turbo' => 'GPT-3.5 Turbo',
+							'gemini-pro' => 'Gemini Pro',
+						);
+						foreach ( $models as $model_value => $model_label ) {
+							printf(
+								'<option value="%s" %s>%s</option>',
+								esc_attr( $model_value ),
+								selected( $current_model, $model_value, false ),
+								esc_html( $model_label )
+							);
+						}
+						?>
+					</select>
                             <p class="description">
-                                <?php esc_html_e( 'Ejemplos: gpt-4, gpt-3.5-turbo, gemini-pro', 'mondays-work-ai-core' ); ?>
-                            </p>
+					<?php esc_html_e( 'Selecciona el modelo de IA a utilizar', 'mondays-work-ai-core' ); ?>                            </p>
                         </td>
                     </tr>
 
