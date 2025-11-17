@@ -744,3 +744,41 @@ class AdminUI {
                             <span><?php esc_html_e( 'peticiones/hora', 'mondays-work-ai-core' ); ?></span>
                             <p class="description">
                                 <?php esc_html_e( 'Número máximo de peticiones por hora', 'mondays-work-ai-core' ); ?>
+
+        				</p>
+			</td>
+		</tr>
+	</table>
+
+	<?php submit_button(); ?>
+</form>
+		</div>
+		<?php
+	}
+
+	/**
+	 * Render Providers tab content
+	 * Renderiza contenido de pestaña Proveedores
+	 *
+	 * @since 1.0.0
+	 * @access public
+	 * @return void
+	 */
+	public function render_providers_tab(): void {
+		// TODO: Implement providers tab
+		echo '<div class="wrap"><h2>Proveedores de IA</h2><p>Configuración de proveedores próximamente.</p></div>';
+	}
+
+	/**
+	 * Render Help tab content
+	 * Renderiza contenido de pestaña Ayuda
+	 *
+	 * @since 1.0.0
+	 * @access public
+	 * @return void
+	 */
+	public function render_help_tab(): void {
+		// TODO: Implement help tab
+		echo '<div class="wrap"><h2>Ayuda</h2><p>Documentación próximamente.</p></div>';
+	}
+}
