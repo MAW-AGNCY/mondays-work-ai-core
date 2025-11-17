@@ -37,8 +37,7 @@ use MondaysWork\AI\Core\Core\Deactivator;
 // Load custom PSR-4 autoloader / Cargar autoloader PSR-4 personalizado
 require_once __DIR__ . '/includes/autoload.php';
 // Initialize plugin / Inicializar plugin
-if ( class_exists( 'MondaysWork\\AI\\Core\\Core\\Plugin' ) ) {
-    // Get plugin instance / Obtener instancia del plugin
+	if ( class_exists( 'MondaysWork\AI\Core\Core\Plugin' ) ) {    // Get plugin instance / Obtener instancia del plugin
     $plugin = Plugin::get_instance();
     
     // Initialize the plugin / Inicializar el plugin
@@ -51,8 +50,7 @@ if ( class_exists( 'MondaysWork\\AI\\Core\\Core\\Plugin' ) ) {
  * Se ejecuta cuando el plugin es activado
  */
 register_activation_hook( __FILE__, function() {
-    if ( class_exists( 'MondaysWork\\AI\\Core\\Core\\Activator' ) ) {
-        Activator::activate();
+		if ( class_exists( 'MondaysWork\AI\Core\Core\Activator' ) ) {        Activator::activate();
     }
 } );
 
@@ -62,8 +60,7 @@ register_activation_hook( __FILE__, function() {
  * Se ejecuta cuando el plugin es desactivado
  */
 register_deactivation_hook( __FILE__, function() {
-    if ( class_exists( 'MondaysWork\\AI\\Core\\Core\\Deactivator' ) ) {
-        Deactivator::deactivate();
+		if ( class_exists( 'MondaysWork\AI\Core\Core\Deactivator' ) ) {        Deactivator::deactivate();
     }
 } );
 
