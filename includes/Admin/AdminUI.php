@@ -569,14 +569,26 @@ class AdminUI {
                             </label>
                         </th>
                         <td>
-                            <input
-                                type="password"
-                                id="mwai_api_key"
-                                name="<?php echo esc_attr( $this->plugin_slug . '_config' ); ?>[api_key]"
-                                value="<?php echo esc_attr( $this->config->get( 'api_key', '' ) ); ?>"
-                                class="regular-text"
-                                placeholder="sk-..."
-                            />
+                            <div style="position: relative; display: inline-block;">
+						<input
+							type="password"
+							id="mwai_api_key"
+							name="<?php echo esc_attr( $this->plugin_slug . '_config' ); ?>[api_key]"
+							value="<?php echo esc_attr( $this->config->get( 'api_key', '' ) ); ?>"
+							class="regular-text"
+							placeholder="sk-..."
+							style="padding-right: 35px;"
+						/>
+						<button
+							type="button"
+							class="button mwai-toggle-password"
+							style="position: absolute; right: 2px; top: 1px; padding: 3px 8px; height: 28px; min-width: 30px;"
+							onclick="var input = document.getElementById('mwai_api_key'); input.type = input.type === 'password' ? 'text' : 'password'; this.textContent = input.type === 'password' ? '👁️' : '🙈';"
+							title="<?php esc_attr_e( 'Mostrar/Ocultar contraseña', 'mondays-work-ai-core' ); ?>"
+						>
+							👁️
+						</button>
+					</div>
                             <button type="button" class="button mwai-test-connection" data-provider="<?php echo esc_attr( $current_provider ); ?>">
                                 <?php esc_html_e( 'Probar Conexión', 'mondays-work-ai-core' ); ?>
                             </button>
