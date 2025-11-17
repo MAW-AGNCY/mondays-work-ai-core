@@ -766,18 +766,70 @@ class AdminUI {
 	 */
 	public function render_help_tab(): void {
 		?>
-		<div class="wrap">
-			<h2><?php esc_html_e( 'Ayuda y Documentación', 'mondays-work-ai-core' ); ?></h2>
-			
-			<div class="mwai-card">
-				<h3><?php esc_html_e( 'Recursos de Ayuda', 'mondays-work-ai-core' ); ?></h3>
-				<ul>
-					<li><?php esc_html_e( 'Documentación completa disponible próximamente', 'mondays-work-ai-core' ); ?></li>
-					<li><?php esc_html_e( 'Soporte técnico: info@mondaysatwork.com', 'mondays-work-ai-core' ); ?></li>
-					<li><?php esc_html_e( 'Repositorio GitHub: https://github.com/MAW-AGNCY/mondays-work-ai-core', 'mondays-work-ai-core' ); ?></li>
+		?>
+		<div class="wrap mwai-help-wrap">
+			<h1><?php esc_html_e( 'Ayuda - Monday\'s Work AI Core', 'mondays-work-ai-core' ); ?></h1>
+			<p class="mwai-help-intro">
+				<?php esc_html_e( 'Bienvenido al sistema de ayuda. Aqui encontraras informacion detallada sobre cada seccion del plugin y como utilizarlas.', 'mondays-work-ai-core' ); ?>
+			</p>
+
+			<!-- Seccion General -->
+			<div class="mwai-card mwai-help-section">
+				<h2><span class="dashicons dashicons-admin-generic"></span> <?php esc_html_e( 'Seccion General', 'mondays-work-ai-core' ); ?></h2>
+				<p><?php esc_html_e( 'La seccion General controla el estado global del plugin y opciones de depuracion:', 'mondays-work-ai-core' ); ?></p>
+				<ul class="mwai-help-list">
+					<li><strong><?php esc_html_e( 'Estado del Plugin:', 'mondays-work-ai-core' ); ?></strong> <?php esc_html_e( 'Activa o desactiva todas las funcionalidades de IA. Cuando esta desactivado, ninguna peticion de IA sera procesada.', 'mondays-work-ai-core' ); ?></li>
+					<li><strong><?php esc_html_e( 'Modo Debug:', 'mondays-work-ai-core' ); ?></strong> <?php esc_html_e( 'Habilita logs detallados para debugging. Los registros se guardan en el log de WordPress. Util para diagnosticar problemas de conexion o errores de API.', 'mondays-work-ai-core' ); ?></li>
+				</ul>
+			</div>
+
+			<!-- Seccion Proveedores de IA -->
+			<div class="mwai-card mwai-help-section">
+				<h2><span class="dashicons dashicons-cloud"></span> <?php esc_html_e( 'Seccion Proveedores de IA', 'mondays-work-ai-core' ); ?></h2>
+				<p><?php esc_html_e( 'Aqui configuras el proveedor de IA y sus parametros:', 'mondays-work-ai-core' ); ?></p>
+				<ul class="mwai-help-list">
+					<li><strong><?php esc_html_e( 'Seleccionar Proveedor:', 'mondays-work-ai-core' ); ?></strong> <?php esc_html_e( 'Elige entre OpenAI (GPT-4, GPT-3.5), Google Gemini, o un modelo local. Cada proveedor tiene caracteristicas y costos diferentes.', 'mondays-work-ai-core' ); ?></li>
+					<li><strong><?php esc_html_e( 'API Key:', 'mondays-work-ai-core' ); ?></strong> <?php esc_html_e( 'Clave de autenticacion del proveedor. OpenAI: obten tu key en platform.openai.com/api-keys. Gemini: en makersuite.google.com/app/apikey. Usa el boton "Probar Conexion" para verificar que funciona.', 'mondays-work-ai-core' ); ?></li>
+					<li><strong><?php esc_html_e( 'Modelo:', 'mondays-work-ai-core' ); ?></strong> <?php esc_html_e( 'Modelo especifico a usar (gpt-4, gpt-3.5-turbo, gemini-pro). GPT-4 es mas potente pero mas costoso. GPT-3.5-turbo es mas rapido y economico.', 'mondays-work-ai-core' ); ?></li>
+					<li><strong><?php esc_html_e( 'Temperature (0.0-2.0):', 'mondays-work-ai-core' ); ?></strong> <?php esc_html_e( 'Controla la creatividad de las respuestas. 0.0 = deterministico y preciso, 1.0 = equilibrado (recomendado), 2.0 = muy creativo pero impredecible.', 'mondays-work-ai-core' ); ?></li>
+					<li><strong><?php esc_html_e( 'Tokens Maximos:', 'mondays-work-ai-core' ); ?></strong> <?php esc_html_e( 'Longitud maxima de las respuestas. 1 token ~= 4 caracteres. 1000 tokens = ~750 palabras. Valores mas altos cuestan mas.', 'mondays-work-ai-core' ); ?></li>
+				</ul>
+			</div>
+
+			<!-- Seccion Cache y Rendimiento -->
+			<div class="mwai-card mwai-help-section">
+				<h2><span class="dashicons dashicons-performance"></span> <?php esc_html_e( 'Seccion Cache y Rendimiento', 'mondays-work-ai-core' ); ?></h2>
+				<p><?php esc_html_e( 'Optimiza el rendimiento y reduce costos mediante cache:', 'mondays-work-ai-core' ); ?></p>
+				<ul class="mwai-help-list">
+					<li><strong><?php esc_html_e( 'Habilitar Cache:', 'mondays-work-ai-core' ); ?></strong> <?php esc_html_e( 'Almacena respuestas de IA en cache para evitar peticiones repetidas. ALTAMENTE RECOMENDADO en produccion. Reduce costos hasta un 80% y mejora velocidad drasticamente.', 'mondays-work-ai-core' ); ?></li>
+					<li><strong><?php esc_html_e( 'Duracion del Cache:', 'mondays-work-ai-core' ); ?></strong> <?php esc_html_e( 'Tiempo en segundos que se mantienen las respuestas cacheadas. 300 = 5 min (desarrollo/testing), 3600 = 1 hora (recomendado produccion), 86400 = 24 horas (contenido muy estatico).', 'mondays-work-ai-core' ); ?></li>
+					<li><strong><?php esc_html_e( 'Limite de Peticiones:', 'mondays-work-ai-core' ); ?></strong> <?php esc_html_e( 'Numero maximo de peticiones a la API por hora. Protege contra uso excesivo y costos inesperados. 60 = ~1 por minuto (sitios pequenos), 300+ (sitios grandes).', 'mondays-work-ai-core' ); ?></li>
+				</ul>
+			</div>
+
+			<!-- Primeros Pasos -->
+			<div class="mwai-card mwai-help-section mwai-quickstart">
+				<h2><span class="dashicons dashicons-superhero"></span> <?php esc_html_e( 'Primeros Pasos - Guia Rapida', 'mondays-work-ai-core' ); ?></h2>
+				<ol class="mwai-steps">
+					<li><?php esc_html_e( 'Obten una API key de OpenAI (platform.openai.com) o Google Gemini (makersuite.google.com)', 'mondays-work-ai-core' ); ?></li>
+					<li><?php esc_html_e( 'Ve a la pestana "Proveedores de IA" y selecciona tu proveedor', 'mondays-work-ai-core' ); ?></li>
+					<li><?php esc_html_e( 'Ingresa tu API key y configura el modelo (gpt-3.5-turbo para empezar)', 'mondays-work-ai-core' ); ?></li>
+					<li><?php esc_html_e( 'Haz clic en "Probar Conexion" para verificar que todo funciona', 'mondays-work-ai-core' ); ?></li>
+					<li><?php esc_html_e( 'Guarda la configuracion y habilita el plugin en la seccion "General"', 'mondays-work-ai-core' ); ?></li>
+					<li><?php esc_html_e( 'Habilita el cache en "Cache y Rendimiento" para optimizar costos', 'mondays-work-ai-core' ); ?></li>
+				</ol>
+			</div>
+
+			<!-- Soporte -->
+			<div class="mwai-card mwai-help-section mwai-contact">
+				<h2><span class="dashicons dashicons-sos"></span> <?php esc_html_e( 'Soporte y Documentacion', 'mondays-work-ai-core' ); ?></h2>
+				<p><?php esc_html_e( 'Si necesitas ayuda adicional:', 'mondays-work-ai-core' ); ?></p>
+				<ul class="mwai-contact-list">
+					<li><strong><?php esc_html_e( 'Email:', 'mondays-work-ai-core' ); ?></strong> <a href="mailto:info@mondaysatwork.com">info@mondaysatwork.com</a></li>
+					<li><strong><?php esc_html_e( 'Documentacion:', 'mondays-work-ai-core' ); ?></strong> <a href="https://github.com/MAW-AGNCY/mondays-work-ai-core/blob/main/README.md" target="_blank"><?php esc_html_e( 'README y guias en GitHub', 'mondays-work-ai-core' ); ?></a></li>
+					<li><strong><?php esc_html_e( 'Repositorio:', 'mondays-work-ai-core' ); ?></strong> <a href="https://github.com/MAW-AGNCY/mondays-work-ai-core" target="_blank">github.com/MAW-AGNCY/mondays-work-ai-core</a></li>
 				</ul>
 			</div>
 		</div>
-		<?php
-	}
+		<?php	}
 	}
