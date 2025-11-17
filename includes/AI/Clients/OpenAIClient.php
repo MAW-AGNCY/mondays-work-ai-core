@@ -810,7 +810,7 @@ class OpenAIClient implements AIClientInterface {
      */
     private function validate_api_key( string $api_key ): void {
         // Las API keys de OpenAI comienzan con "sk-" / OpenAI API keys start with "sk-"
-        if ( ! preg_match( '/^sk-[a-zA-Z0-9]{20,}$/', $api_key ) ) {
+        if ( ! preg_match( '/^sk-[a-zA-Z0-9]{\-20,}$/', $api_key ) ) {
             throw new \InvalidArgumentException(
                 __( 'El formato de la API key de OpenAI no es válido.', 'mondays-work-ai-core' )
             );
