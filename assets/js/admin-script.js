@@ -27,8 +27,7 @@
         init: function() {
             this.initTabs();
             this.initFormValidation();
-            this.210();
-            this.initAjaxSave();
+		this.initConnectionTest();            this.initAjaxSave();
             this.initConfirmDialogs();
             this.initTooltips();
             
