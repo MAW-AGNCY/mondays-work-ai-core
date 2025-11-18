@@ -837,3 +837,5 @@ class OpenAIClient implements AIClientInterface {
                     $message,
                     wp_json_encode( $context )
 					                )
+
+				            );
