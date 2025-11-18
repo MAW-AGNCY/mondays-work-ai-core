@@ -153,25 +153,4 @@ add_filter( 'plugin_row_meta', function( $links, $file ) {
     return $links;
 }, 10, 2 );
 
-/**
- * Display admin notice if Composer dependencies are missing
- * Mostrar aviso de admin si faltan dependencias de Composer
- */
-if ( ! file_exists( __DIR__ . '/vendor/autoload.php' ) ) {
-    add_action( 'admin_notices', function() {
-        ?>
-        <div class="notice notice-error">
-            <p>
-                <strong><?php esc_html_e( 'Monday\'s Work AI Core:', 'mondays-work-ai-core' ); ?></strong>
-                <?php esc_html_e( 'Faltan dependencias de Composer. Por favor ejecuta:', 'mondays-work-ai-core' ); ?>
-                <code>composer install --no-dev</code>
-            </p>
-            <p>
-                <strong>English:</strong>
-                <?php esc_html_e( 'Composer dependencies are missing. Please run:', 'mondays-work-ai-core' ); ?>
-                <code>composer install --no-dev</code>
-            </p>
-        </div>
-        <?php
-    } );
 }
