@@ -1,156 +1,286 @@
 <?php
 /**
- * Plugin Name:       Monday's Work AI Core
- * Plugin URI:        https://github.com/MAW-AGNCY/mondays-work-ai-core
- * Description:       Core AI system for WooCommerce - Modular artificial intelligence integration
- * Version:           1.0.1
-  * Requires at least: 5.8
- * Requires PHP:      7.4
- * Author:            Mondays at Work
- * Author URI:        https://mondaysatwork.com
- * License:           Proprietary
- * License URI:       https://github.com/MAW-AGNCY/mondays-work-ai-core/blob/main/LICENSE
- * Text Domain:       mondays-work-ai-core
- * Domain Path:       /languages
+ * Plugin Name: Monday's Work AI Core
+ * Plugin URI: https://github.com/yourusername/mondays-work-ai-core
+ * Description: Advanced AI integration core plugin with security features, encryption, and rate limiting for WordPress.
+ * Version: 1.0.1
+ * Requires at least: 5.8
+ * Requires PHP: 7.4
+ * Author: Your Name
+ * Author URI: https://layers.tv
+ * License: GPL v2 or later
+ * License URI: https://www.gnu.org/licenses/gpl-2.0.html
+ * Text Domain: mondays-work-ai-core
+ * Domain Path: /languages
  *
- * @package           MondaysWork\AI\Core
- * @author            Mondays at Work <info@mondaysatwork.com>
- * @copyright         2025 Mondays at Work
- * @license           Proprietary
- *
- * This plugin is proprietary software and may not be distributed, modified,
- * or used without explicit permission from Mondays at Work.
- * Este plugin es software propietario y no puede ser distribuido, modificado
- * o usado sin permiso explícito de Mondays at Work.
+ * @package MondaysWork\AI\Core
  */
 
-// Exit if accessed directly / Salir si se accede directamente
+namespace MondaysWork\AI;
+
+// Exit if accessed directly.
 if ( ! defined( 'ABSPATH' ) ) {
-    exit;
-}
-
-// Use statements at file level / Declaraciones use al nivel del archivo
-use MondaysWork\AI\Core\Core\Plugin;
-use MondaysWork\AI\Core\Core\Activator;
-use MondaysWork\AI\Core\Core\Deactivator;
-
-// Load custom PSR-4 autoloader / Cargar autoloader PSR-4 personalizado
-require_once __DIR__ . '/includes/autoload.php';
-// Initialize plugin / Inicializar plugin
-	if ( class_exists( 'MondaysWork\AI\Core\Core\Plugin' ) ) {    // Get plugin instance / Obtener instancia del plugin
-    $plugin = Plugin::get_instance();
-    
-    // Initialize the plugin / Inicializar el plugin
-    $plugin->init();
+	exit;
 }
 
 /**
- * Activation hook / Hook de activación
- * Runs when the plugin is activated
- * Se ejecuta cuando el plugin es activado
+ * Plugin constants.
  */
-register_activation_hook( __FILE__, function() {
-		if ( class_exists( 'MondaysWork\AI\Core\Core\Activator' ) ) {        Activator::activate();
-    }
-} );
+define( 'MONDAYS_WORK_AI_VERSION', '1.0.1' );
+define( 'MONDAYS_WORK_AI_PLUGIN_FILE', __FILE__ );
+define( 'MONDAYS_WORK_AI_PLUGIN_DIR', plugin_dir_path( __FILE__ ) );
+define( 'MONDAYS_WORK_AI_PLUGIN_URL', plugin_dir_url( __FILE__ ) );
+define( 'MONDAYS_WORK_AI_PLUGIN_BASENAME', plugin_basename( __FILE__ ) );
 
 /**
- * Deactivation hook / Hook de desactivación
- * Runs when the plugin is deactivated
- * Se ejecuta cuando el plugin es desactivado
+ * PSR-4 Autoloader.
+ *
+ * @param string $class Class name to load.
+ * @return void
  */
-register_deactivation_hook( __FILE__, function() {
-		if ( class_exists( 'MondaysWork\AI\Core\Core\Deactivator' ) ) {        Deactivator::deactivate();
-    }
-} );
+spl_autoload_register(
+	function ( $class ) {
+		$prefix   = 'MondaysWork\\AI\\';
+		$base_dir = MONDAYS_WORK_AI_PLUGIN_DIR . 'includes/';
+
+		$len = strlen( $prefix );
+		if ( strncmp( $prefix, $class, $len ) !== 0 ) {
+			return;
+		}
+
+		$relative_class = substr( $class, $len );
+		$file           = $base_dir . str_replace( '\\', '/', $relative_class ) . '.php';
+
+		if ( file_exists( $file ) ) {
+			require $file;
+		}
+	}
+);
 
 /**
- * Define plugin constants / Definir constantes del plugin
+ * Main Plugin Class
  */
-if ( ! defined( 'MWAI_CORE_VERSION' ) ) {
-	define( 'MWAI_CORE_VERSION', '1.0.1' );}
+class Plugin {
 
-if ( ! defined( 'MWAI_CORE_PLUGIN_FILE' ) ) {
-    define( 'MWAI_CORE_PLUGIN_FILE', __FILE__ );
+	/**
+	 * Plugin instance.
+	 *
+	 * @var Plugin
+	 */
+	private static $instance = null;
+
+	/**
+	 * AJAX Handler instance.
+	 *
+	 * @var Ajax\AjaxHandler
+	 */
+	private $ajax_handler;
+
+	/**
+	 * Get plugin instance.
+	 *
+	 * @return Plugin
+	 */
+	public static function get_instance() {
+		if ( null === self::$instance ) {
+			self::$instance = new self();
+		}
+		return self::$instance;
+	}
+
+	/**
+	 * Constructor.
+	 */
+	private function __construct() {
+		$this->init_hooks();
+	}
+
+	/**
+	 * Initialize WordPress hooks.
+	 *
+	 * @return void
+	 */
+	private function init_hooks() {
+		register_activation_hook( MONDAYS_WORK_AI_PLUGIN_FILE, array( $this, 'activate' ) );
+		register_deactivation_hook( MONDAYS_WORK_AI_PLUGIN_FILE, array( $this, 'deactivate' ) );
+		
+		add_action( 'plugins_loaded', array( $this, 'load_plugin' ) );
+		add_action( 'init', array( $this, 'load_textdomain' ) );
+	}
+
+	/**
+	 * Load plugin functionality.
+	 *
+	 * @return void
+	 */
+	public function load_plugin() {
+		// Check requirements.
+		if ( ! $this->check_requirements() ) {
+			return;
+		}
+
+		// Initialize AJAX handler.
+		$this->ajax_handler = new Ajax\AjaxHandler();
+
+		// Hook for other components to initialize.
+		do_action( 'mondays_work_ai_loaded' );
+	}
+
+	/**
+	 * Load plugin text domain.
+	 *
+	 * @return void
+	 */
+	public function load_textdomain() {
+		load_plugin_textdomain(
+			'mondays-work-ai-core',
+			false,
+			dirname( MONDAYS_WORK_AI_PLUGIN_BASENAME ) . '/languages'
+		);
+	}
+
+	/**
+	 * Check plugin requirements.
+	 *
+	 * @return bool
+	 */
+	private function check_requirements() {
+		$requirements_met = true;
+
+		// Check PHP version.
+		if ( version_compare( PHP_VERSION, '7.4', '<' ) ) {
+			add_action( 'admin_notices', array( $this, 'php_version_notice' ) );
+			$requirements_met = false;
+		}
+
+		// Check OpenSSL extension.
+		if ( ! extension_loaded( 'openssl' ) ) {
+			add_action( 'admin_notices', array( $this, 'openssl_notice' ) );
+			$requirements_met = false;
+		}
+
+		return $requirements_met;
+	}
+
+	/**
+	 * Display PHP version notice.
+	 *
+	 * @return void
+	 */
+	public function php_version_notice() {
+		?>
+		<div class="notice notice-error">
+			<p>
+				<?php
+				echo esc_html(
+					sprintf(
+						/* translators: 1: Required PHP version, 2: Current PHP version */
+						__( 'Monday\'s Work AI Core requires PHP version %1$s or higher. You are running version %2$s.', 'mondays-work-ai-core' ),
+						'7.4',
+						PHP_VERSION
+					)
+				);
+				?>
+			</p>
+		</div>
+		<?php
+	}
+
+	/**
+	 * Display OpenSSL extension notice.
+	 *
+	 * @return void
+	 */
+	public function openssl_notice() {
+		?>
+		<div class="notice notice-error">
+			<p>
+				<?php
+				echo esc_html__( 'Monday\'s Work AI Core requires the OpenSSL PHP extension to be installed and enabled.', 'mondays-work-ai-core' );
+				?>
+			</p>
+		</div>
+		<?php
+	}
+
+	/**
+	 * Plugin activation.
+	 *
+	 * @return void
+	 */
+	public function activate() {
+		// Check requirements on activation.
+		if ( ! $this->check_requirements() ) {
+			deactivate_plugins( MONDAYS_WORK_AI_PLUGIN_BASENAME );
+			wp_die(
+				esc_html__( 'Monday\'s Work AI Core cannot be activated due to unmet requirements.', 'mondays-work-ai-core' ),
+				esc_html__( 'Plugin Activation Error', 'mondays-work-ai-core' ),
+				array( 'back_link' => true )
+			);
+		}
+
+		// Set default options.
+		$this->set_default_options();
+
+		// Flush rewrite rules.
+		flush_rewrite_rules();
+
+		// Set activation flag.
+		set_transient( 'mondays_work_ai_activated', true, 30 );
+	}
+
+	/**
+	 * Set default plugin options.
+	 *
+	 * @return void
+	 */
+	private function set_default_options() {
+		$defaults = array(
+			'mondays_work_ai_version'        => MONDAYS_WORK_AI_VERSION,
+			'mondays_work_ai_installed_date' => current_time( 'mysql' ),
+		);
+
+		foreach ( $defaults as $key => $value ) {
+			if ( false === get_option( $key ) ) {
+				add_option( $key, $value );
+			}
+		}
+	}
+
+	/**
+	 * Plugin deactivation.
+	 *
+	 * @return void
+	 */
+	public function deactivate() {
+		// Flush rewrite rules.
+		flush_rewrite_rules();
+
+		// Clean up transients.
+		delete_transient( 'mondays_work_ai_activated' );
+
+		// Hook for cleanup actions.
+		do_action( 'mondays_work_ai_deactivated' );
+	}
+
+	/**
+	 * Get AJAX handler instance.
+	 *
+	 * @return Ajax\AjaxHandler|null
+	 */
+	public function get_ajax_handler() {
+		return $this->ajax_handler;
+	}
 }
 
-if ( ! defined( 'MWAI_CORE_PLUGIN_DIR' ) ) {
-    define( 'MWAI_CORE_PLUGIN_DIR', plugin_dir_path( __FILE__ ) );
+/**
+ * Initialize the plugin.
+ *
+ * @return Plugin
+ */
+function mondays_work_ai() {
+	return Plugin::get_instance();
 }
 
-if ( ! defined( 'MWAI_CORE_PLUGIN_URL' ) ) {
-    define( 'MWAI_CORE_PLUGIN_URL', plugin_dir_url( __FILE__ ) );
-}
-
-if ( ! defined( 'MWAI_CORE_PLUGIN_BASENAME' ) ) {
-    define( 'MWAI_CORE_PLUGIN_BASENAME', plugin_basename( __FILE__ ) );
-}
-
-/**
- * Check for required dependencies / Verificar dependencias requeridas
- */
-add_action( 'admin_init', function() {
-    // Check if WooCommerce is active / Verificar si WooCommerce está activo
-    if ( ! class_exists( 'WooCommerce' ) ) {
-        add_action( 'admin_notices', function() {
-            ?>
-				<div class="notice notice-warning">                <p>
-                    <strong><?php esc_html_e( 'Monday\'s Work AI Core:', 'mondays-work-ai-core' ); ?></strong>
-					<?php esc_html_e( 'This plugin works best with WooCommerce installed. Some features may be limited without it.', 'mondays-work-ai-core' ); ?>                </p>
-            </div>
-            <?php
-        } );
-        
-} );
-
-/**
- * Load plugin text domain for translations / Cargar dominio de texto para traducciones
- */
-add_action( 'plugins_loaded', function() {
-    load_plugin_textdomain(
-        'mondays-work-ai-core',
-        false,
-        dirname( plugin_basename( __FILE__ ) ) . '/languages'
-    );
-} );
-
-/**
- * Add settings link on plugins page / Añadir enlace de configuración en página de plugins
- */
-add_filter( 'plugin_action_links_' . plugin_basename( __FILE__ ), function( $links ) {
-    $settings_link = sprintf(
-        '<a href="%s">%s</a>',
-        admin_url( 'admin.php?page=mondays-work-ai-core' ),
-        esc_html__( 'Configuración', 'mondays-work-ai-core' )
-    );
-    
-    array_unshift( $links, $settings_link );
-    
-    return $links;
-} );
-
-/**
- * Add plugin row meta links / Añadir enlaces de meta en fila del plugin
- */
-add_filter( 'plugin_row_meta', function( $links, $file ) {
-    if ( plugin_basename( __FILE__ ) === $file ) {
-        $row_meta = array(
-            'docs' => sprintf(
-                '<a href="%s" target="_blank">%s</a>',
-                'https://github.com/MAW-AGNCY/mondays-work-ai-core/blob/main/docs/CONFIGURATION.md',
-                esc_html__( 'Documentación', 'mondays-work-ai-core' )
-            ),
-            'support' => sprintf(
-                '<a href="%s">%s</a>',
-                'mailto:info@mondaysatwork.com',
-                esc_html__( 'Soporte', 'mondays-work-ai-core' )
-            ),
-        );
-        
-        return array_merge( $links, $row_meta );
-    }
-    
-    return $links;
-}, 10, 2 );
-
-}
+// Start the plugin.
+mondays_work_ai();
