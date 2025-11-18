@@ -99,8 +99,7 @@ class Plugin {
      * @access private
      * @var    string
      */
-    private $version = '1.0.0';
-
+	private $version = '1.0.1';
     /**
      * Slug del plugin
      * Plugin slug
