@@ -3,8 +3,8 @@
  * Plugin Name:       Monday's Work AI Core
  * Plugin URI:        https://github.com/MAW-AGNCY/mondays-work-ai-core
  * Description:       Core AI system for WooCommerce - Modular artificial intelligence integration
- * Version:           1.0.0
- * Requires at least: 5.8
+ * Version:           1.0.1
+  * Requires at least: 5.8
  * Requires PHP:      7.4
  * Author:            Mondays at Work
  * Author URI:        https://mondaysatwork.com
