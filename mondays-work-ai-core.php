@@ -68,8 +68,7 @@ register_deactivation_hook( __FILE__, function() {
  * Define plugin constants / Definir constantes del plugin
  */
 if ( ! defined( 'MWAI_CORE_VERSION' ) ) {
-    define( 'MWAI_CORE_VERSION', '1.0.0' );
-}
+	define( 'MWAI_CORE_VERSION', '1.0.1' );}
 
 if ( ! defined( 'MWAI_CORE_PLUGIN_FILE' ) ) {
     define( 'MWAI_CORE_PLUGIN_FILE', __FILE__ );
