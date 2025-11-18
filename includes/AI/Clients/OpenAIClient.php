@@ -839,3 +839,4 @@ class OpenAIClient implements AIClientInterface {
 					                )
 
 				            );
+			        }
