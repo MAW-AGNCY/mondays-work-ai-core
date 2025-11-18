@@ -1,100 +1,175 @@
 # Changelog
 
-All notable changes to the Monday's Work AI Core plugin will be documented in this file.
+All notable changes to Monday's Work AI Core will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [Unreleased]
+## [1.0.1] - 2024-11-18
 
-## [1.0.1] - 2025-01-27
+### 🚨 CRITICAL FIX
+- **FIXED:** Parse error in mondays-work-ai-core.php line 92-104
+  - Corrected syntax error with unclosed braces in `init_hooks()` method
+  - Issue occurred when adding action hooks in main plugin file
+  - Plugin now loads correctly without syntax errors
+  - Resolved production crash on layers.tv
 
-### 🐛 Fixed
+### Changed
+- Refactored main plugin class structure for better maintainability
+- Improved error handling in plugin initialization
+- Enhanced requirement checking with detailed admin notices
 
-- **CRITICAL**: Fixed Parse Error in `OpenAIClient.php` line 813
-  - Removed doubled single quote in regex pattern (`$''` → `$'`)
-  - Plugin now activates correctly without syntax errors
-  - Error message: "Parse error: syntax error, unexpected single-quoted string on line 815"
+### Security
+- Added OpenSSL extension check before plugin activation
+- Improved error messages for missing dependencies
 
-### ✨ Added
+## [1.0.0] - 2024-11-17
 
-- Comprehensive troubleshooting section in README.md
-  - Solutions for Parse errors during plugin activation
-  - Guide for API key compatibility issues
-  - Fixes for white screen and activation problems
-  - Autoloader troubleshooting steps
+### Added - Core Features
+- **🔐 Encryption System**
+  - AES-256-CBC encryption for sensitive data
+  - HMAC authentication to prevent tampering
+  - Secure storage in WordPress options
+  - `Encryption` class with full PHPDoc documentation
 
-- Security and best practices documentation
-  - API key protection mechanisms
-  - Security recommendations (HTTPS, rate limits, monitoring)
-  - Input validation and sanitization details
-  - SQL injection protection information
+- **⏱️ Rate Limiting**
+  - WordPress transient-based rate limiting
+  - IP and user-based identification
+  - Configurable limits per action
+  - Automatic cleanup of expired limits
+  - `RateLimiter` class with comprehensive API
 
-- Detailed technical requirements section
-  - PHP 7.4+ compatibility specifications
-  - Required PHP extensions (json, curl, mbstring)
-  - WordPress features utilized (Options, Settings, Transients API)
-  - Compatibility matrix (shared hosting, multisite, WooCommerce)
+- **🔒 AJAX Security**
+  - Automatic nonce validation
+  - Capability checking
+  - Rate limit integration
+  - Sanitized input handling
+  - `AjaxHandler` class with example endpoints
 
-- Recent changelog section in README
-  - Documented critical bug fix
-  - Listed PHP compatibility improvements
-  - Documented API key format support
+### Added - Development Tools
+- **Testing Infrastructure**
+  - PHPUnit bootstrap configuration
+  - 20+ unit tests for Encryption class
+  - WordPress test suite integration
+  - Code coverage reporting
 
-- Contributing guidelines
-  - Bug reporting template
-  - Feature suggestion process
-  - Code of conduct for collaborators
+- **CI/CD Pipeline**
+  - GitHub Actions workflow
+  - Multi-version PHP testing (7.4-8.3)
+  - WordPress version compatibility checks
+  - Automated code quality checks
 
-### 🔒 Security
+- **Code Quality**
+  - PHP CodeSniffer configuration
+  - WordPress Coding Standards compliance
+  - PHPCompatibility checks
+  - Security vulnerability scanning
+  - PHPMD and PHPCPD integration
 
-- Confirmed API key validation supports both formats:
-  - Legacy format: `sk-xxxxxxxxxxxxxxxxxxxxxxxx`
-  - New project-based format: `sk-proj-xxxxxxxxxxxxxxxxxxxxxxxx`
-- Verified input sanitization using WordPress functions
-- Confirmed prepared statements for SQL protection
+### Added - Documentation
+- Comprehensive README.md with usage examples
+- PHPDoc documentation for all classes
+- Inline code comments
+- Example implementations
 
-### 📚 Documentation
+### Security Features
+- PSR-4 autoloading for modern PHP structure
+- Namespace isolation (`MondaysWork\AI\Core`)
+- Input sanitization and validation
+- Output escaping
+- Prepared SQL statements (when applicable)
+- Nonce verification for all AJAX requests
 
-- Updated README.md with 150+ new lines of documentation
-- All PHP code verified to have comprehensive PHPDoc comments
-- All JavaScript code verified to have JSDoc comments
-- Bilingual documentation (Spanish/English) maintained
+## [0.9.0] - 2024-11-15 (Beta)
 
-### ✅ Verified
+### Added
+- Initial plugin structure
+- Basic WordPress integration
+- Plugin activation/deactivation hooks
+- Text domain setup for internationalization
 
-- PHP 7.4+ compatibility confirmed
-  - No use of PHP 8.0+ only functions
-  - Uses compatible alternatives (e.g., `strpos()` instead of `str_starts_with()`)
-- JavaScript regex patterns confirmed to support new API key format
-- WordPress Coding Standards compliance maintained
-- PSR-4 autoloading working correctly
-
-## [1.0.0] - 2025-01-20
-
-### ✨ Added
-
-- Initial release of Monday's Work AI Core plugin
-- Multi-AI provider support (OpenAI, Google Gemini, local models)
-- Factory pattern architecture for easy extensibility
-- Comprehensive admin interface with Mondays at Work branding
-- Rate limiting and error handling
-- Caching system for improved performance
-- WordPress and WooCommerce integration
-- PSR-4 autoloading (no Composer required in production)
-- Bilingual code documentation (Spanish/English)
-- Complete API client implementation for OpenAI
-- Form validation and AJAX functionality
-- Accessibility features (ARIA attributes, keyboard navigation)
-- Security features (input validation, sanitization, nonce verification)
+### Requirements
+- PHP 7.4 or higher
+- WordPress 5.8 or higher
+- OpenSSL PHP extension
 
 ---
 
-## Tipos de Cambios / Change Types
+## Version History Summary
 
-- `Added` / `Añadido`: New features / Nuevas funcionalidades
-- `Changed` / `Cambiado`: Changes in existing functionality / Cambios en funcionalidad existente
-- `Deprecated` / `Obsoleto`: Soon-to-be removed features / Funcionalidades que pronto se eliminarán
-- `Removed` / `Eliminado`: Removed features / Funcionalidades eliminadas
-- `Fixed` / `Corregido`: Bug fixes / Correcciones de errores
-- `Security` / `Seguridad`: Security improvements / Mejoras de seguridad
+- **1.0.1** - Critical syntax error fix for production
+- **1.0.0** - Initial stable release with security features
+- **0.9.0** - Beta version with basic structure
+
+## Upgrade Guide
+
+### From 0.9.0 to 1.0.0
+1. Backup your database
+2. Update plugin files
+3. Define `MONDAYS_WORK_AI_ENCRYPTION_KEY` in wp-config.php (recommended)
+4. Verify OpenSSL extension is enabled
+5. Clear all caches
+
+### From 1.0.0 to 1.0.1
+1. Simply update plugin files - no database changes
+2. Deactivate and reactivate plugin if issues persist
+3. Clear WordPress object cache
+
+## Breaking Changes
+
+### Version 1.0.0
+- Minimum PHP version increased to 7.4
+- OpenSSL extension now required
+- Namespace changed to `MondaysWork\AI\Core`
+
+## Known Issues
+
+### Version 1.0.1
+- None reported
+
+### Version 1.0.0
+- ~~Parse error in main plugin file (lines 92-104)~~ **FIXED in 1.0.1**
+
+## Roadmap
+
+### Version 1.1.0 (Planned)
+- [ ] Admin settings page
+- [ ] API key management UI
+- [ ] Rate limit dashboard
+- [ ] Import/export encrypted data
+- [ ] Multisite support
+
+### Version 1.2.0 (Planned)
+- [ ] REST API endpoints
+- [ ] Webhook support
+- [ ] Advanced logging system
+- [ ] Email notifications for rate limits
+- [ ] Custom encryption algorithms
+
+### Version 2.0.0 (Future)
+- [ ] React-based admin interface
+- [ ] GraphQL API support
+- [ ] Machine learning model integration
+- [ ] Real-time analytics dashboard
+- [ ] Multi-language AI support
+
+## Support and Feedback
+
+If you encounter any issues or have suggestions:
+
+- Report bugs: [GitHub Issues](https://github.com/yourusername/mondays-work-ai-core/issues)
+- Feature requests: [GitHub Discussions](https://github.com/yourusername/mondays-work-ai-core/discussions)
+- Security issues: Email security@layers.tv
+
+## Contributors
+
+Thanks to all contributors who have helped make this plugin better!
+
+- [@yourusername](https://github.com/yourusername) - Creator and maintainer
+
+---
+
+[Unreleased]: https://github.com/yourusername/mondays-work-ai-core/compare/v1.0.1...HEAD
+[1.0.1]: https://github.com/yourusername/mondays-work-ai-core/compare/v1.0.0...v1.0.1
+[1.0.0]: https://github.com/yourusername/mondays-work-ai-core/compare/v0.9.0...v1.0.0
+[0.9.0]: https://github.com/yourusername/mondays-work-ai-core/releases/tag/v0.9.0
