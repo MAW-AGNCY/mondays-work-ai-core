@@ -164,6 +164,168 @@ Desarrollado con ❤️ por [**Mondays at Work**](https://www.mondaysatwork.com)
 - 🌐 **Web**: [mondaysatwork.com](https://www.mondaysatwork.com)
 - 🐛 **Issues**: [GitHub Issues](https://github.com/MAW-AGNCY/mondays-work-ai-core/issues)
 
+
+---
+
+## 🔧 Solución de Problemas
+
+### Error de Parse al Activar el Plugin
+
+Si recibes un error como `Parse error: syntax error, unexpected single-quoted string`, esto ha sido corregido en la última versión. Asegúrate de:
+
+1. Descargar la versión más reciente del repositorio
+2. Limpiar cualquier cache de PHP/OPcache
+3. Verificar que la sintaxis del archivo `includes/AI/Clients/OpenAIClient.php` es correcta
+
+### Problemas de Compatibilidad con API Keys
+
+El plugin soporta ambos formatos de API Keys de OpenAI:
+
+- **Formato Legacy**: `sk-xxxxxxxxxxxxxxxxxxxxxxxx`
+- **Formato Nuevo (Project-based)**: `sk-proj-xxxxxxxxxxxxxxxxxxxxxxxx`
+
+Si tu API key no es reconocida, verifica que:
+
+1. No tiene espacios al inicio o final
+2. Corresponde a uno de los formatos soportados
+3. La API key está activa en tu cuenta de OpenAI/Gemini
+
+### Plugin No Activa o Muestra Pantalla Blanca
+
+Si el plugin no activa:
+
+1. Verifica que tu servidor cumple con los requisitos mínimos (PHP >= 7.4)
+2. Revisa los logs de error de PHP (`/wp-content/debug.log` si WP_DEBUG está activado)
+3. Desactiva otros plugins para descartar conflictos
+4. Verifica que no hay errores de sintaxis en los archivos PHP
+
+### Problemas con Autoloader
+
+El plugin incluye su propio autoloader PSR-4 personalizado. Si recibes errores de clases no encontradas:
+
+1. Verifica que el archivo `includes/autoload.php` existe y es accesible
+2. Comprueba los permisos de archivos (644 para archivos, 755 para directorios)
+3. Asegúrate de que la estructura de carpetas está intacta
+
+---
+
+## 🔐 Seguridad y Mejores Prácticas
+
+### Protección de API Keys
+
+Las API keys se almacenan de forma segura:
+
+- ✅ Utilizan funciones de WordPress para almacenamiento encriptado
+- ✅ No se exponen en el código fuente del sitio
+- ✅ Se validan antes de ser utilizadas
+- ✅ Se sanitizan todas las entradas de usuario
+
+### Recomendaciones de Seguridad
+
+1. **No compartas tu API key**: Mantén tus credenciales privadas
+2. **Utiliza límites de rate**: Configura límites en tu cuenta de OpenAI/Gemini
+3. **Monitorea el uso**: Revisa regularmente el consumo de tu API
+4. **Actualiza regularmente**: Mantén el plugin actualizado con las últimas correcciones de seguridad
+5. **Usa HTTPS**: Asegúrate de que tu sitio WordPress usa SSL/TLS
+
+### Validación de Entradas
+
+Todas las entradas de usuario son:
+
+- Sanitizadas usando funciones de WordPress (`sanitize_text_field`, etc.)
+- Validadas según tipo de dato esperado
+- Escapadas antes de mostrarse en HTML
+- Protegidas contra inyección SQL usando prepared statements
+
+---
+
+## 📋 Requisitos Técnicos Detallados
+
+### PHP
+
+- **Versión mínima**: PHP 7.4
+- **Versión recomendada**: PHP 8.0 o superior
+- **Extensiones requeridas**:
+  - `json`: Para manejo de respuestas de API
+  - `curl`: Para peticiones HTTP a servicios de IA
+  - `mbstring`: Para manejo correcto de caracteres multibyte
+
+### WordPress
+
+- **Versión mínima**: WordPress 5.8
+- **Versión recomendada**: Última versión estable
+- **Características utilizadas**:
+  - Options API para configuración
+  - Settings API para panel de administración
+  - Transients API para caching
+  - HTTP API para peticiones externas
+
+### Compatibilidad
+
+- ✅ Compatible con hosting compartido
+- ✅ Compatible con WordPress Multisite
+- ✅ Compatible con WooCommerce 5.0+
+- ✅ Soporta ambos formatos de API keys de OpenAI
+- ✅ No requiere Composer en producción
+
+---
+
+## 📝 Changelog Reciente
+
+### Versión Actual (2025-01-27)
+
+#### 🐛 Correcciones de Errores
+
+- **CRÍTICO**: Corregido Parse Error en `OpenAIClient.php` línea 813
+  - Eliminada comilla simple duplicada en patrón regex
+  - El plugin ahora activa correctamente sin errores de sintaxis
+
+#### ✨ Mejoras
+
+- Verificada compatibilidad con PHP 7.4+
+- Actualizada documentación con guía de solución de problemas
+- Añadidas mejores prácticas de seguridad
+- Documentado soporte para ambos formatos de API keys OpenAI
+
+#### 📚 Documentación
+
+- Añadida sección de troubleshooting completa
+- Documentadas características de seguridad
+- Actualizados requisitos técnicos detallados
+- Añadida información sobre compatibilidad de API keys
+
+---
+
+## 🤝 Contribuyendo al Proyecto
+
+### Reportar Bugs
+
+Si encuentras un error:
+
+1. Verifica que no haya sido reportado ya en [GitHub Issues](https://github.com/MAW-AGNCY/mondays-work-ai-core/issues)
+2. Crea un nuevo issue con:
+   - Descripción clara del problema
+   - Pasos para reproducir el error
+   - Versión de PHP y WordPress
+   - Logs de error relevantes
+
+### Sugerir Mejoras
+
+Para sugerir nuevas funcionalidades:
+
+1. Abre un issue con la etiqueta "enhancement"
+2. Describe claramente la funcionalidad propuesta
+3. Explica el caso de uso y beneficios
+4. Si es posible, proporciona ejemplos de implementación
+
+### Código de Conducta
+
+- Respeta a todos los colaboradores
+- Usa lenguaje inclusivo
+- Acepta críticas constructivas
+- Enfócate en lo mejor para la comunidad
+
+
 ---
 
 <div align="center">
