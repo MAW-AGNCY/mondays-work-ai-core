@@ -835,4 +835,5 @@ class OpenAIClient implements AIClientInterface {
                 sprintf(
                     '[Monday\'s Work AI Core - OpenAI] %s | Context: %s',
                     $message,
-                    wp_json_encode( $
+                    wp_json_encode( $context )
+					                )
