@@ -1,0 +1,76 @@
+<?xml version="1.0"?>
+<ruleset xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" name="Monday's Work AI Core" xsi:noNamespaceSchemaLocation="https://raw.githubusercontent.com/squizlabs/PHP_CodeSniffer/master/phpcs.xsd">
+
+	<description>PHP CodeSniffer configuration for Monday's Work AI Core plugin</description>
+
+	<!-- What to scan -->
+	<file>.</file>
+
+	<!-- Exclude patterns -->
+	<exclude-pattern>/vendor/*</exclude-pattern>
+	<exclude-pattern>/node_modules/*</exclude-pattern>
+	<exclude-pattern>/tests/bootstrap.php</exclude-pattern>
+
+	<!-- Show progress -->
+	<arg value="ps"/>
+
+	<!-- Strip the filepaths down to the relevant bit -->
+	<arg name="basepath" value="./"/>
+
+	<!-- Check up to 20 files simultaneously -->
+	<arg name="parallel" value="20"/>
+
+	<!-- Only check PHP files -->
+	<arg name="extensions" value="php"/>
+
+	<!-- Use WordPress Coding Standards -->
+	<rule ref="WordPress">
+		<exclude name="WordPress.Files.FileName.InvalidClassFileName"/>
+		<exclude name="WordPress.Files.FileName.NotHyphenatedLowercase"/>
+	</rule>
+
+	<!-- Use WordPress-Extra for additional checks -->
+	<rule ref="WordPress-Extra"/>
+
+	<!-- Use WordPress-Docs for documentation standards -->
+	<rule ref="WordPress-Docs"/>
+
+	<!-- Check for PHP cross-version compatibility -->
+	<config name="testVersion" value="7.4-"/>
+
+	<!-- Text domain check -->
+	<rule ref="WordPress.WP.I18n">
+		<properties>
+			<property name="text_domain" type="array">
+				<element value="mondays-work-ai-core"/>
+			</property>
+		</properties>
+	</rule>
+
+	<!-- Prefix check -->
+	<rule ref="WordPress.NamingConventions.PrefixAllGlobals">
+		<properties>
+			<property name="prefixes" type="array">
+				<element value="mondays_work"/>
+				<element value="MondaysWork"/>
+			</property>
+		</properties>
+	</rule>
+
+	<!-- Custom complexity limits -->
+	<rule ref="Generic.Metrics.CyclomaticComplexity">
+		<properties>
+			<property name="complexity" value="10"/>
+			<property name="absoluteComplexity" value="20"/>
+		</properties>
+	</rule>
+
+	<!-- Nesting level -->
+	<rule ref="Generic.Metrics.NestingLevel">
+		<properties>
+			<property name="nestingLevel" value="5"/>
+			<property name="absoluteNestingLevel" value="10"/>
+		</properties>
+	</rule>
+
+</ruleset>
