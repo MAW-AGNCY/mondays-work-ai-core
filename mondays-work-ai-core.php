@@ -94,19 +94,13 @@ add_action( 'admin_init', function() {
     if ( ! class_exists( 'WooCommerce' ) ) {
         add_action( 'admin_notices', function() {
             ?>
-            <div class="notice notice-error">
-                <p>
+				<div class="notice notice-warning">                <p>
                     <strong><?php esc_html_e( 'Monday\'s Work AI Core:', 'mondays-work-ai-core' ); ?></strong>
-                    <?php esc_html_e( 'Este plugin requiere WooCommerce para funcionar correctamente.', 'mondays-work-ai-core' ); ?>
-                    <?php esc_html_e( 'This plugin requires WooCommerce to work properly.', 'mondays-work-ai-core' ); ?>
-                </p>
+					<?php esc_html_e( 'This plugin works best with WooCommerce installed. Some features may be limited without it.', 'mondays-work-ai-core' ); ?>                </p>
             </div>
             <?php
         } );
         
-        // Deactivate plugin / Desactivar plugin
-        deactivate_plugins( plugin_basename( __FILE__ ) );
-    }
 } );
 
 /**
